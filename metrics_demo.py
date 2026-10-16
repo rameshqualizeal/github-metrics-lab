@@ -2,8 +2,34 @@ def calculate_total(a, b):
     return a + b
 
 
+def ai_authored_percentage(ai_lines, total_lines, ndigits=2):
+    """Return the percentage of changed lines that were AI-authored.
+
+    Args:
+        ai_lines: Number of added/changed lines attributed to an AI assistant.
+        total_lines: Total number of added/changed lines in the same scope
+            (e.g. a commit, pull request, or repository over a time window).
+        ndigits: Decimal places to round the result to.
+
+    Returns:
+        A float between 0 and 100. Returns 0.0 when ``total_lines`` is 0.
+
+    Raises:
+        ValueError: If either count is negative or ``ai_lines`` exceeds
+            ``total_lines``.
+    """
+    if ai_lines < 0 or total_lines < 0:
+        raise ValueError("line counts must be non-negative")
+    if ai_lines > total_lines:
+        raise ValueError("ai_lines cannot exceed total_lines")
+    if total_lines == 0:
+        return 0.0
+    return round(ai_lines / total_lines * 100, ndigits)
+
+
 if __name__ == "__main__":
     print(calculate_total(10, 20))
+    print(ai_authored_percentage(45, 120))
 
 
 def test_create_task_rejects_non_string_description(client):
@@ -28,3 +54,19 @@ def test_patch_task(client):
     assert updated.status_code == 200
     assert updated.get_json()["task"]["completed"] is True
     assert updated.get_json()["task"]["title"] == "Drafted"
+
+
+def test_ai_authored_percentage():
+    assert ai_authored_percentage(45, 120) == 37.5
+    assert ai_authored_percentage(1, 3) == 33.33
+    assert ai_authored_percentage(0, 0) == 0.0
+    assert ai_authored_percentage(50, 50) == 100.0
+
+
+def test_ai_authored_percentage_rejects_invalid_counts():
+    import pytest
+
+    with pytest.raises(ValueError):
+        ai_authored_percentage(-1, 10)
+    with pytest.raises(ValueError):
+        ai_authored_percentage(11, 10)
