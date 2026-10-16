@@ -30,7 +30,12 @@ def test_create_task_rejects_non_string_description(client):
     )
     assert response.status_code == 400
 
-
+def test_create_task_rejects_non_string_description(client):
+    response = client.post(
+        "/tasks",
+        json={"title": "Valid task", "description": 123},
+    )
+    assert response.status_code == 400
 
     def test_get_missing_task_returns_404(client):
         response = client.get("/tasks/not-a-real-id")
