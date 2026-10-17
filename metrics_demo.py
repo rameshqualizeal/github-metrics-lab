@@ -9,6 +9,11 @@ def calculate_multiplication(a, b):
 def calculate_subtraction(a, b):
     return a - b
 
+
+def calculate_division(a, b):
+    return a / b
+
+
 def ai_authored_percentage(ai_lines, total_lines, ndigits=2):
     """Return the percentage of changed lines that were AI-authored.
 
