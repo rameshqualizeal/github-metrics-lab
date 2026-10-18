@@ -77,3 +77,6 @@ def test_ai_authored_percentage_rejects_invalid_counts():
         ai_authored_percentage(-1, 10)
     with pytest.raises(ValueError):
         ai_authored_percentage(11, 10)
+
+def deploys_per_week(deploys, weeks):
+    return deploys / weeks if weeks else 0.0
