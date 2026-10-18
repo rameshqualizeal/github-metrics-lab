@@ -93,3 +93,10 @@ def lead_time_hours(first_commit_iso, deployed_iso):
     start = datetime.fromisoformat(first_commit_iso.replace("Z", "+00:00"))
     end = datetime.fromisoformat(deployed_iso.replace("Z", "+00:00"))
     return (end - start).total_seconds() / 3600
+
+
+def rework_rate(reworked_prs, merged_prs):
+    """Share of merged PRs that needed rework (M10)."""
+    if merged_prs == 0:
+        return 0.0
+    return reworked_prs / merged_prs
