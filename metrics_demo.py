@@ -1,3 +1,6 @@
+from datetime import datetime
+
+
 def calculate_total(a, b):
     return a + b
 
@@ -80,3 +83,13 @@ def test_ai_authored_percentage_rejects_invalid_counts():
 
 def deploys_per_week(deploys, weeks):
     return deploys / weeks if weeks else 0.0
+
+
+def lead_time_hours(first_commit_iso, deployed_iso):
+    """Return the hours between the first commit and deployment as a float.
+
+    Both arguments are ISO-8601 timestamps; a trailing "Z" is treated as UTC.
+    """
+    start = datetime.fromisoformat(first_commit_iso.replace("Z", "+00:00"))
+    end = datetime.fromisoformat(deployed_iso.replace("Z", "+00:00"))
+    return (end - start).total_seconds() / 3600
