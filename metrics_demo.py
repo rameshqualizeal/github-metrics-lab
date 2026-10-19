@@ -109,4 +109,7 @@ def rework_rate(reworked_prs, merged_prs):
 
 def review_wait_hours(ready_iso, reviewed_iso):
     """Hours from ready-for-review to the first review."""
+    if not ready_iso or not reviewed_iso:
+        return None
     return lead_time_hours(ready_iso, reviewed_iso)
+
