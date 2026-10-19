@@ -113,3 +113,15 @@ def review_wait_hours(ready_iso, reviewed_iso):
         return None
     return lead_time_hours(ready_iso, reviewed_iso)
 
+
+def attribution_mapping_rate(mapped_commits, total_commits, ndigits=2):
+    """Share of commits with a resolvable author identity (0–100)."""
+    if total_commits == 0:
+        return 0.0
+    return round(mapped_commits / total_commits * 100, ndigits)
+
+
+def test_attribution_mapping_rate():
+    assert attribution_mapping_rate(8, 10) == 80.0
+    assert attribution_mapping_rate(0, 0) == 0.0
+
