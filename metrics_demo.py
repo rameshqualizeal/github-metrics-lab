@@ -118,3 +118,9 @@ def cycle_time_days(work_start_iso, merged_iso):
     """Days from work start to merge, as a float."""
     return lead_time_hours(work_start_iso, merged_iso) / 24
 
+
+def deployment_success_rate(successful, total):
+    """Share of deployments that succeeded."""
+    if total == 0:
+        return 0.0
+    return successful / total
