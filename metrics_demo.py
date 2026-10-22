@@ -113,3 +113,8 @@ def review_wait_hours(ready_iso, reviewed_iso):
         return None
     return lead_time_hours(ready_iso, reviewed_iso)
 
+
+def cycle_time_days(work_start_iso, merged_iso):
+    """Days from work start to merge, as a float."""
+    return lead_time_hours(work_start_iso, merged_iso) / 24
+
