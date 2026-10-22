@@ -122,5 +122,5 @@ def cycle_time_days(work_start_iso, merged_iso):
 def deployment_success_rate(successful, total):
     """Share of deployments that succeeded."""
     if total == 0:
-        return 0.0
+        return None
     return successful / total
