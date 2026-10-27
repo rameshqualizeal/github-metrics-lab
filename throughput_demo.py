@@ -25,6 +25,8 @@ def test_deploy_match_ratio():
     assert deploy_match_ratio(2, 3) == 66.67
     assert deploy_match_ratio(0, 0) == 0.0
 
+print(pr_throughput(3, 30))
+print(deploy_match_ratio(2, 3))
 
 if __name__ == "__main__":
     print(f"throughput={pr_throughput(3, 30)} prs/day")
