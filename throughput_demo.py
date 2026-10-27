@@ -23,6 +23,15 @@ def throughput_summary(merged_prs, days, matched_prs, merged_before_deploy):
     }
 
 
+def format_throughput_line(merged_prs, days, matched_prs, merged_before_deploy):
+    """Human-readable line for demo scripts and logs."""
+    summary = throughput_summary(merged_prs, days, matched_prs, merged_before_deploy)
+    return (
+        f"throughput={summary['throughput_prs_per_day']} prs/day, "
+        f"deploy_match={summary['deploy_match_pct']}%"
+    )
+
+
 def test_pr_throughput():
     assert pr_throughput(3, 30) == 0.1
     assert pr_throughput(0, 7) == 0.0
@@ -42,4 +51,4 @@ def test_throughput_summary():
 
 
 if __name__ == "__main__":
-    print(throughput_summary(3, 30, 2, 3))
+    print(format_throughput_line(3, 30, 2, 3))
