@@ -7,6 +7,7 @@
     "node": ">=22.18"
   },
   "scripts": {
-    "test": "node --test src/metrics.test.ts"
+    "test": "node --test src/metrics.test.ts",
+    "demo:live": "node src/live-metrics-demo.ts"
   }
 }
