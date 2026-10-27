@@ -1,3 +1,4 @@
+from collections import Counter
 from datetime import datetime
 
 
@@ -124,3 +125,36 @@ def deployment_success_rate(successful, total):
     if total == 0:
         return None
     return successful / total
+
+
+def median(values):
+    """Median of a list of numbers, or None if the list is empty."""
+    if not values:
+        return None
+    ordered = sorted(values)
+    mid = len(ordered) // 2
+    if len(ordered) % 2:
+        return ordered[mid]
+    return (ordered[mid - 1] + ordered[mid]) / 2
+
+
+def mode(values):
+    """Most common value in a list, or None if the list is empty.
+
+    On a tie, the value that appears first in the list wins.
+    """
+    if not values:
+        return None
+    return Counter(values).most_common(1)[0][0]
+
+
+def percentile(values, p):
+    """Return the p-th percentile (0-100) of values, or None for an empty list."""
+    if not values:
+        return None
+    ordered = sorted(values)
+    k = (len(ordered) - 1) * p / 100
+    low = int(k)
+    high = min(low + 1, len(ordered) - 1)
+    return ordered[low] + (ordered[high] - ordered[low]) * (k - low)
+
