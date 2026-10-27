@@ -15,6 +15,14 @@ def deploy_match_ratio(matched_prs, merged_before_deploy, ndigits=2):
     return round(matched_prs / merged_before_deploy * 100, ndigits)
 
 
+def throughput_summary(merged_prs, days, matched_prs, merged_before_deploy):
+    """One-line summary for AT-10 telemetry webhook checks."""
+    return {
+        "throughput_prs_per_day": pr_throughput(merged_prs, days),
+        "deploy_match_pct": deploy_match_ratio(matched_prs, merged_before_deploy),
+    }
+
+
 def test_pr_throughput():
     assert pr_throughput(3, 30) == 0.1
     assert pr_throughput(0, 7) == 0.0
@@ -25,9 +33,13 @@ def test_deploy_match_ratio():
     assert deploy_match_ratio(2, 3) == 66.67
     assert deploy_match_ratio(0, 0) == 0.0
 
-print(pr_throughput(3, 30))
-print(deploy_match_ratio(2, 3))
+
+def test_throughput_summary():
+    assert throughput_summary(3, 30, 2, 3) == {
+        "throughput_prs_per_day": 0.1,
+        "deploy_match_pct": 66.67,
+    }
+
 
 if __name__ == "__main__":
-    print(f"throughput={pr_throughput(3, 30)} prs/day")
-    print(f"deploy_match={deploy_match_ratio(2, 3)}%")
+    print(throughput_summary(3, 30, 2, 3))
