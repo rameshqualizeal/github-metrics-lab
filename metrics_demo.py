@@ -149,7 +149,13 @@ def mode(values):
 
 
 def percentile(values, p):
-    """Return the p-th percentile (0-100) of values, or None for an empty list."""
+    """Return the p-th percentile (0-100) of values, or None for an empty list.
+
+    Raises:
+        ValueError: If ``p`` is outside 0-100.
+    """
+    if not 0 <= p <= 100:
+        raise ValueError("p must be between 0 and 100")
     if not values:
         return None
     ordered = sorted(values)
