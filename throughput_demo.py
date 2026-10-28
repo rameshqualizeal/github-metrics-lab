@@ -8,6 +8,13 @@ def pr_throughput(merged_prs, days, ndigits=2):
     return round(merged_prs / days, ndigits)
 
 
+def pr_throughput_per_week(merged_prs, days, ndigits=2):
+    """Average merged PRs per 7-day week over the window."""
+    if days <= 0:
+        return 0.0
+    return round(merged_prs / days * 7, ndigits)
+
+
 def deploy_match_ratio(matched_prs, merged_before_deploy, ndigits=2):
     """Share of merged PRs linked to the next successful deploy (0–100)."""
     if merged_before_deploy == 0:
@@ -16,9 +23,10 @@ def deploy_match_ratio(matched_prs, merged_before_deploy, ndigits=2):
 
 
 def throughput_summary(merged_prs, days, matched_prs, merged_before_deploy):
-    """One-line summary for AT-10 telemetry webhook checks."""
+    """Summary dict for AT-10 telemetry webhook checks."""
     return {
         "throughput_prs_per_day": pr_throughput(merged_prs, days),
+        "throughput_prs_per_week": pr_throughput_per_week(merged_prs, days),
         "deploy_match_pct": deploy_match_ratio(matched_prs, merged_before_deploy),
     }
 
@@ -29,11 +37,10 @@ def format_throughput_line(summary):
     Args:
         summary: Dict returned by ``throughput_summary``.
     """
-    throughput = summary["throughput_prs_per_day"]
-    deploy_match = summary["deploy_match_pct"]
     return (
-        f"merged_prs_per_day={throughput}, "
-        f"deploy_match_pct={deploy_match}"
+        f"merged_prs_per_day={summary['throughput_prs_per_day']}, "
+        f"merged_prs_per_week={summary['throughput_prs_per_week']}, "
+        f"deploy_match_pct={summary['deploy_match_pct']}"
     )
 
 
@@ -41,6 +48,12 @@ def test_pr_throughput():
     assert pr_throughput(3, 30) == 0.1
     assert pr_throughput(0, 7) == 0.0
     assert pr_throughput(1, 0) == 0.0
+
+
+def test_pr_throughput_per_week():
+    assert pr_throughput_per_week(3, 30) == 0.7
+    assert pr_throughput_per_week(0, 14) == 0.0
+    assert pr_throughput_per_week(1, 0) == 0.0
 
 
 def test_deploy_match_ratio():
@@ -51,6 +64,7 @@ def test_deploy_match_ratio():
 def test_throughput_summary():
     assert throughput_summary(3, 30, 2, 3) == {
         "throughput_prs_per_day": 0.1,
+        "throughput_prs_per_week": 0.7,
         "deploy_match_pct": 66.67,
     }
 
@@ -58,7 +72,7 @@ def test_throughput_summary():
 def test_format_throughput_line():
     summary = throughput_summary(3, 30, 2, 3)
     assert format_throughput_line(summary) == (
-        "merged_prs_per_day=0.1, deploy_match_pct=66.67"
+        "merged_prs_per_day=0.1, merged_prs_per_week=0.7, deploy_match_pct=66.67"
     )
 
 
