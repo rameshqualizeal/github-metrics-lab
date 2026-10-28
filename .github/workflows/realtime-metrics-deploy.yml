@@ -25,7 +25,8 @@ concurrency:
 jobs:
   metrics-and-deploy:
     runs-on: ubuntu-latest
-    environment: ${{ inputs.environment || (github.event_name == 'push' && 'production' || 'preview') }}
+    # The deployment is created by src/realtime-deploy.ts. A job-level
+    # `environment:` would add a second deployment record for every run.
     steps:
       - uses: actions/checkout@v4
 
