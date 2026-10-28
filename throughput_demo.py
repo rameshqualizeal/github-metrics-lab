@@ -8,6 +8,12 @@ def pr_throughput(merged_prs, days, ndigits=2):
     return round(merged_prs / days, ndigits)
 
 
+def pr_throughput_per_week(merged_prs, days, ndigits=2):
+    """Average merged PRs per 7-day week over the window."""
+    daily = pr_throughput(merged_prs, days, ndigits=ndigits + 2)
+    return round(daily * 7, ndigits)
+
+
 def deploy_match_ratio(matched_prs, merged_before_deploy, ndigits=2):
     """Share of merged PRs linked to the next successful deploy (0–100)."""
     if merged_before_deploy == 0:
@@ -41,6 +47,11 @@ def test_pr_throughput():
     assert pr_throughput(3, 30) == 0.1
     assert pr_throughput(0, 7) == 0.0
     assert pr_throughput(1, 0) == 0.0
+
+
+def test_pr_throughput_per_week():
+    assert pr_throughput_per_week(3, 30) == 0.7
+    assert pr_throughput_per_week(0, 14) == 0.0
 
 
 def test_deploy_match_ratio():
