@@ -7,7 +7,8 @@
     "node": ">=22.18"
   },
   "scripts": {
-    "test": "node --test src/metrics.test.ts",
-    "demo:live": "node src/live-metrics-demo.ts"
+    "test": "node --test src/metrics.test.ts src/realtime-deploy.test.ts",
+    "demo:live": "node src/live-metrics-demo.ts",
+    "demo:realtime": "node src/realtime-metrics-demo.ts"
   }
 }
