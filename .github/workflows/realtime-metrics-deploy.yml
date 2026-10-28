@@ -1,0 +1,52 @@
+name: realtime-metrics-deploy
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Deployment environment
+        type: choice
+        default: production
+        options:
+          - production
+          - preview
+
+permissions:
+  contents: read
+  deployments: write
+
+concurrency:
+  group: realtime-metrics-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  metrics-and-deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment || (github.event_name == 'push' && 'production' || 'preview') }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.18.0'
+
+      - name: Test every metric formula
+        run: npm test
+
+      - name: Compute all 15 metrics and create the deployment
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_REF_NAME: ${{ github.ref_name }}
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_SERVER_URL: ${{ github.server_url }}
+          GITHUB_API_URL: ${{ github.api_url }}
+          DEPLOY_ENVIRONMENT: ${{ inputs.environment || (github.event_name == 'push' && 'production' || 'preview') }}
+          # Fork pull requests get a read-only token, so keep their deploy off.
+          DEPLOY_ENABLED: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+        run: npm run demo:realtime
