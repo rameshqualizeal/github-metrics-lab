@@ -46,6 +46,41 @@ test('rejects non-object snapshots and non-numeric values', () => {
   assert.throws(() => diffSnapshots({ mergedPrs: 2 }, { mergedPrs: Number.NaN }), TypeError);
 });
 
+test('reports zero change for identical snapshots', () => {
+  const rows = diffSnapshots(
+    { adoptionPct: 75, medianReviewHours: 2 },
+    { adoptionPct: 75, medianReviewHours: 2 },
+  );
+  assert.deepEqual(rows, [
+    { key: 'adoptionPct', previous: 75, current: 75, delta: 0, pctChange: 0 },
+    { key: 'medianReviewHours', previous: 2, current: 2, delta: 0, pctChange: 0 },
+  ]);
+});
+
+test('keeps negative deltas and percentage changes signed', () => {
+  const [row] = diffSnapshots({ reworkRatePct: 25 }, { reworkRatePct: 10 });
+  assert.deepEqual(row, {
+    key: 'reworkRatePct',
+    previous: 25,
+    current: 10,
+    delta: -15,
+    pctChange: -60,
+  });
+});
+
+test('treats undefined values as no-data', () => {
+  assert.deepEqual(diffSnapshots({ medianReviewHours: undefined }, { medianReviewHours: 4 }), [
+    { key: 'medianReviewHours', previous: null, current: 4, delta: null, pctChange: null },
+  ]);
+  assert.deepEqual(diffSnapshots({ medianReviewHours: 4 }, { medianReviewHours: undefined }), [
+    { key: 'medianReviewHours', previous: 4, current: null, delta: null, pctChange: null },
+  ]);
+});
+
+test('returns an empty diff for empty snapshots', () => {
+  assert.deepEqual(diffSnapshots({}, {}), []);
+});
+
 test('formats deltas, zero change, and no-data rows', () => {
   const rows = diffSnapshots(
     { adoptionPct: 10, mergedPrs: 0, medianReviewHours: null },
