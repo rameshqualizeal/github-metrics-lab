@@ -2,6 +2,18 @@
 
 Health check: the service is healthy when the home page loads.
 
+## Local setup
+
+Requires Node.js 22.18 or newer. The demos run directly from TypeScript with
+no build step and no runtime dependencies.
+
+```powershell
+git clone https://github.com/rameshqualizeal/github-metrics-lab.git
+cd github-metrics-lab
+npm test               # run the node:test suite
+npm run demo:live      # print all 15 metrics, no network
+```
+
 ## Realtime metrics + deployment
 
 `src/realtime-deploy.ts` computes the full M01-M15 snapshot and creates a
