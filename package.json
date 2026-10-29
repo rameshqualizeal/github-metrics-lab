@@ -9,6 +9,7 @@
   "scripts": {
     "test": "node --test src/metrics.test.ts src/realtime-deploy.test.ts src/metric-thresholds.test.js src/snapshot-diff.test.js",
     "demo:live": "node src/live-metrics-demo.ts",
+    "demo:json": "node src/live-metrics-json.ts",
     "demo:realtime": "node src/realtime-metrics-demo.ts",
     "demo:alerts": "node src/threshold-demo.js",
     "demo:diff": "node examples/snapshot-diff-demo.js",
