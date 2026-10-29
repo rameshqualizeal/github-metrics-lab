@@ -62,6 +62,34 @@ test('malformed rules are rejected', () => {
   assert.throws(() => evaluateThresholds(null), TypeError);
 });
 
+test('falls back to the metric key when a min rule has no label', () => {
+  const result = evaluateThresholds({ acceptancePct: 12 }, [{ metric: 'acceptancePct', min: 40 }]);
+  assert.deepEqual(result.breaches, [
+    { metric: 'acceptancePct', label: 'acceptancePct', value: 12, kind: 'min', limit: 40 },
+  ]);
+  assert.equal(formatThresholdBreaches(result), 'acceptancePct=12 < 40');
+});
+
+test('accepts a value equal to a min-only limit', () => {
+  const result = evaluateThresholds({ acceptancePct: 40 }, [{ metric: 'acceptancePct', min: 40 }]);
+  assert.equal(result.ok, true);
+  assert.equal(result.checked, 1);
+  assert.deepEqual(result.breaches, []);
+});
+
+test('reports the correct breach kind when a rule has min and max', () => {
+  const over = evaluateThresholds({ reviewHours: 25 }, [{ metric: 'reviewHours', min: 1, max: 24 }]);
+  assert.equal(over.breaches[0].kind, 'max');
+  assert.equal(over.breaches[0].limit, 24);
+
+  const under = evaluateThresholds({ reviewHours: 0.5 }, [{ metric: 'reviewHours', min: 1, max: 24 }]);
+  assert.equal(under.breaches[0].kind, 'min');
+  assert.equal(under.breaches[0].limit, 1);
+
+  const inside = evaluateThresholds({ reviewHours: 12 }, [{ metric: 'reviewHours', min: 1, max: 24 }]);
+  assert.equal(inside.ok, true);
+});
+
 test('default thresholds flag the sample live window', () => {
   const result = evaluateThresholds({
     ingestLagP95Seconds: 48,
