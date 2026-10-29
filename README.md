@@ -52,6 +52,32 @@ read-only. To hand the event to AWS, point an EventBridge rule or a CodeDeploy
 deployment group at this repository's deployment events; the workflow itself
 does not need AWS credentials.
 
+## Threshold alerts
+
+`npm run demo:alerts` checks the sample live window against the default limits
+in `src/metric-thresholds.js`:
+
+| Metric | Snapshot key | Limit |
+| --- | --- | --- |
+| Ingest lag p95 | `ingestLagP95Seconds` | 300 s |
+| PII scrub violations | `piiViolationPct` | 0.5% |
+| Rework rate | `reworkRatePct` | 20% |
+| Lead time median | `leadTimeMedianHours` | 72 h |
+| Cycle time median | `cycleTimeMedianDays` | 10 days |
+| Defect escape rate | `defectEscapePct` | 10% |
+
+Limits are inclusive: a value equal to its limit passes, and only a value
+strictly beyond the limit is reported. Medians are `null` for an empty window,
+so a metric with no data is skipped instead of being treated as a breach.
+
+A failed check prints one line per breach followed by the source label from the
+rule:
+
+```text
+PII scrub violations (%)=2 > 0.5
+defect escape rate (%)=25 > 10
+```
+
 ## The fifteen metrics
 
 | Code | Metric |
