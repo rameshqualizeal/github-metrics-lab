@@ -11,6 +11,7 @@
     "demo:live": "node src/live-metrics-demo.ts",
     "demo:realtime": "node src/realtime-metrics-demo.ts",
     "demo:alerts": "node src/threshold-demo.js",
-    "demo:diff": "node examples/snapshot-diff-demo.js"
+    "demo:diff": "node examples/snapshot-diff-demo.js",
+    "check:catalog": "node scripts/check-metric-catalog.mjs"
   }
 }
