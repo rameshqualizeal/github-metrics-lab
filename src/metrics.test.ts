@@ -121,6 +121,16 @@ test('percentile and ingestLagP95Seconds handle the live lag series', () => {
   assert.throws(() => percentile([1], 50, -1), RangeError);
 });
 
+test('percentile protects the p=0 and p=100 boundaries', () => {
+  assert.equal(percentile([10, 20, 30], 0), 10);
+  assert.equal(percentile([10, 20, 30], 100), 30);
+  assert.equal(percentile([42], 0), 42);
+  assert.equal(percentile([42], 50), 42);
+  assert.equal(percentile([42], 100), 42);
+  assert.equal(percentile([1, 2, 3, 4], 95, 1), 3.9);
+  assert.equal(ingestLagP95Seconds([42]), 42);
+});
+
 test('piiScrubViolationPct reports the post-redaction share', () => {
   assert.equal(piiScrubViolationPct(2, 100), 2);
   assert.equal(piiScrubViolationPct(0, 0), 0);
