@@ -97,3 +97,5 @@ defect escape rate (%)=25 > 10
 | M13 | Attribution mapping |
 | M14 | Cycle time |
 | M15 | Defect escape rate |
+
+AIET live test 2 Nov
