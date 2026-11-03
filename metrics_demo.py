@@ -51,6 +51,13 @@ def summary_line(values):
     return f"count={len(values)} min={min(values)} max={max(values)} mean={mean:.2f}"
 
 
+def range_of(values):
+    """Difference between the largest and smallest value."""
+    if not values:
+        return 0
+    return max(values) - min(values)
+
+
 if __name__ == "__main__":
     print(calculate_total(10, 20))
     print(ai_authored_percentage(45, 120))
