@@ -52,9 +52,9 @@ def summary_line(values):
 
 
 def range_of(values):
-    """Difference between the largest and smallest value."""
+    """Difference between the largest and smallest value, or None if the list is empty."""
     if not values:
-        return 0
+        return None
     return max(values) - min(values)
 
 
