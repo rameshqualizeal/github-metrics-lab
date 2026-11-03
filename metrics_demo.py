@@ -43,6 +43,11 @@ def ai_authored_percentage(ai_lines, total_lines, ndigits=2):
     return round(ai_lines / total_lines * 100, ndigits)
 
 
+def clamp_percentage(value):
+    """Clamp a percentage to the inclusive 0-100 range."""
+    return max(0.0, min(value, 100.0))
+
+
 def summary_line(values):
     """One-line summary of count, min, max and mean for a list of numbers."""
     if not values:
