@@ -43,6 +43,16 @@ def ai_authored_percentage(ai_lines, total_lines, ndigits=2):
     return round(ai_lines / total_lines * 100, ndigits)
 
 
+def clamp_percentage(value):
+    """Clamp a percentage to the inclusive 0-100 range."""
+    return max(0.0, min(value, 100.0))
+
+
+def normalize_percentage(value, ndigits=2):
+    """Clamp and round a percentage value for display."""
+    return round(clamp_percentage(value), ndigits)
+
+
 def summary_line(values):
     """One-line summary of count, min, max and mean for a list of numbers."""
     if not values:
@@ -102,6 +112,19 @@ def test_ai_authored_percentage_rejects_invalid_counts():
         ai_authored_percentage(-1, 10)
     with pytest.raises(ValueError):
         ai_authored_percentage(11, 10)
+
+
+def test_clamp_percentage():
+    assert clamp_percentage(-5) == 0.0
+    assert clamp_percentage(42.5) == 42.5
+    assert clamp_percentage(105) == 100.0
+
+
+def test_normalize_percentage():
+    assert normalize_percentage(-5) == 0.0
+    assert normalize_percentage(42.567) == 42.57
+    assert normalize_percentage(105) == 100.0
+
 
 def deploys_per_week(deploys, weeks):
     return deploys / weeks if weeks else 0.0
