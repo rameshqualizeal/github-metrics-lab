@@ -41,6 +41,11 @@ def format_review_coverage_line(summary):
     )
 
 
+def demo_ready(merged_prs):
+    """True when there is at least one merged PR to show in the demo."""
+    return merged_prs > 0
+
+
 def test_human_review_rate():
     assert human_review_rate(2, 3) == 66.67
     assert human_review_rate(0, 0) == 0.0
