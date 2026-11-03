@@ -43,9 +43,25 @@ def ai_authored_percentage(ai_lines, total_lines, ndigits=2):
     return round(ai_lines / total_lines * 100, ndigits)
 
 
+def summary_line(values):
+    """One-line summary of count, min, max and mean for a list of numbers."""
+    if not values:
+        return "count=0 min=n/a max=n/a mean=n/a"
+    mean = sum(values) / len(values)
+    return f"count={len(values)} min={min(values)} max={max(values)} mean={mean:.2f}"
+
+
+def range_of(values):
+    """Difference between the largest and smallest value, or None if the list is empty."""
+    if not values:
+        return None
+    return max(values) - min(values)
+
+
 if __name__ == "__main__":
     print(calculate_total(10, 20))
     print(ai_authored_percentage(45, 120))
+    print(summary_line([3, 7, 1, 9, 5]))
 
 
 def test_create_task_rejects_non_string_description(client):
