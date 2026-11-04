@@ -11,3 +11,4 @@ Notable changes to the metrics lab, newest first.
 - Add a contributing guide, EditorConfig, Node version pins, and a preflight
   version check.
 - Add local setup instructions to the README.
+- Note: AT-44 test change (changelog).
