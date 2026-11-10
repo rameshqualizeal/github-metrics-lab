@@ -48,6 +48,15 @@ def demo_ready(merged_prs):
     return merged_prs > 0
 
 
+def demo_label(story_key, merged_prs):
+    """Short status label for a demo story."""
+    key = story_key.strip()
+    if not key:
+        raise ValueError("story_key is required")
+    state = "ready" if demo_ready(merged_prs) else "waiting"
+    return f"{key} {state}"
+
+
 def test_human_review_rate():
     assert human_review_rate(2, 3) == 66.67
     assert human_review_rate(0, 0) == 0.0
@@ -77,6 +86,11 @@ def test_review_coverage_summary():
 def test_demo_ready():
     assert demo_ready(1) is True
     assert demo_ready(0) is False
+
+
+def test_demo_label():
+    assert demo_label("AT-41", 1) == "AT-41 ready"
+    assert demo_label(" AT-41 ", 0) == "AT-41 waiting"
 
 
 def test_format_review_coverage_line():
