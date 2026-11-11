@@ -31,6 +31,14 @@ def throughput_summary(merged_prs, days, matched_prs, merged_before_deploy):
     }
 
 
+def final_demo_marker(story_key):
+    """Tag a demo run with its Jira story key."""
+    key = story_key.strip()
+    if not key:
+        raise ValueError("story_key is required")
+    return f"demo={key}"
+
+
 def format_throughput_line(summary):
     """Human-readable line for demo scripts and logs.
 
@@ -67,6 +75,10 @@ def test_throughput_summary():
         "throughput_prs_per_week": 0.7,
         "deploy_match_pct": 66.67,
     }
+
+
+def test_final_demo_marker():
+    assert final_demo_marker("AT-53") == "demo=AT-53"
 
 
 def test_format_throughput_line():
