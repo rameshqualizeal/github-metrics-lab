@@ -262,3 +262,16 @@ def example_clamp_helper_1():
 def freshness_check_helper_1(value):
     """AT-59: small helper added to exercise the PR flow."""
     return value
+
+
+def range_clamp_helper(value, low=0, high=100):
+    """AT-60: clamp value into the inclusive range [low, high].
+
+    >>> range_clamp_helper(150)
+    100
+    >>> range_clamp_helper(-5)
+    0
+    >>> range_clamp_helper(42)
+    42
+    """
+    return max(low, min(high, value))
