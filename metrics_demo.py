@@ -15,7 +15,20 @@ def calculate_subtraction(a, b):
 
 
 def calculate_division(a, b):
+    if b == 0:
+        raise ValueError("divisor must not be zero")
     return a / b
+
+
+def percent_change(old, new):
+    """Return the percentage change from ``old`` to ``new``, rounded to 2 decimals.
+
+    Raises:
+        ValueError: If ``old`` is 0, since the change is undefined.
+    """
+    if old == 0:
+        raise ValueError("old value must not be zero")
+    return round((new - old) / old * 100, 2)
 
 
 def ai_authored_percentage(ai_lines, total_lines, ndigits=2):
