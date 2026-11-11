@@ -39,6 +39,14 @@ def final_demo_marker(story_key):
     return f"demo={key}"
 
 
+def final_demo_status(story_key, jira_status="To Do"):
+    """One line tying the demo marker to the current Jira status."""
+    status = jira_status.strip()
+    if not status:
+        raise ValueError("jira_status is required")
+    return f"{final_demo_marker(story_key)} status={status}"
+
+
 def format_throughput_line(summary):
     """Human-readable line for demo scripts and logs.
 
@@ -79,6 +87,10 @@ def test_throughput_summary():
 
 def test_final_demo_marker():
     assert final_demo_marker("AT-53") == "demo=AT-53"
+
+
+def test_final_demo_status():
+    assert final_demo_status("AT-53") == "demo=AT-53 status=To Do"
 
 
 def test_format_throughput_line():
