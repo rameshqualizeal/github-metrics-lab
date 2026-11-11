@@ -86,6 +86,11 @@ if __name__ == "__main__":
     print(ai_authored_percentage(45, 120))
     print(summary_line([3, 7, 1, 9, 5]))
 
+    print(percent_change(80, 100))
+    print(calculate_division(9, 3))
+    print(summary_line([]))
+
+
 
 def test_create_task_rejects_non_string_description(client):
     response = client.post(
