@@ -62,6 +62,13 @@ def demo_status_line(story_key, merged_prs):
     return f"{demo_label(story_key, merged_prs)} merged_prs={merged_prs}"
 
 
+def meets_review_target(summary, target_pct=80.0):
+    """True when the human review rate is at or above the target percentage."""
+    if not 0 <= target_pct <= 100:
+        raise ValueError("target_pct must be between 0 and 100")
+    return summary["human_review_rate_pct"] >= target_pct
+
+
 def test_human_review_rate():
     assert human_review_rate(2, 3) == 66.67
     assert human_review_rate(0, 0) == 0.0
@@ -100,6 +107,16 @@ def test_demo_label():
 
 def test_demo_status_line():
     assert demo_status_line("AT-41", 2) == "AT-41 ready merged_prs=2"
+
+
+def test_meets_review_target():
+    import pytest
+
+    assert meets_review_target(review_coverage_summary(5, 4)) is True
+    assert meets_review_target(review_coverage_summary(3, 2)) is False
+    assert meets_review_target(review_coverage_summary(3, 2), 50) is True
+    with pytest.raises(ValueError):
+        meets_review_target(review_coverage_summary(3, 2), 101)
 
 
 def test_format_review_coverage_line():
