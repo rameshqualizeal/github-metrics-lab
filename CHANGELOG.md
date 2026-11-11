@@ -4,6 +4,8 @@ Notable changes to the metrics lab, newest first.
 
 ## Unreleased
 
+- Add a range clamp helper, a README review-flow note, and this entry as a test PR batch (AT-60, AT-61, AT-62).
+
 - Add JavaScript snapshot diff helpers with tests.
 - Add threshold checks for the live snapshot and the `demo:alerts` script.
 - Add a sample live-window JSON fixture and a snapshot builder under `examples/`.
