@@ -99,3 +99,5 @@ defect escape rate (%)=25 > 10
 | M15 | Defect escape rate |
 
 AIET live test 2 Nov
+
+> Note (AT-61): small helper and docs PRs in this repo are used to test the PR review flow end to end.
