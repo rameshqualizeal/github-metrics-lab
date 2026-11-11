@@ -57,6 +57,11 @@ def demo_label(story_key, merged_prs):
     return f"{key} {state}"
 
 
+def demo_status_line(story_key, merged_prs):
+    """One line for logs: label plus the merged PR count."""
+    return f"{demo_label(story_key, merged_prs)} merged_prs={merged_prs}"
+
+
 def test_human_review_rate():
     assert human_review_rate(2, 3) == 66.67
     assert human_review_rate(0, 0) == 0.0
@@ -91,6 +96,10 @@ def test_demo_ready():
 def test_demo_label():
     assert demo_label("AT-41", 1) == "AT-41 ready"
     assert demo_label(" AT-41 ", 0) == "AT-41 waiting"
+
+
+def test_demo_status_line():
+    assert demo_status_line("AT-41", 2) == "AT-41 ready merged_prs=2"
 
 
 def test_format_review_coverage_line():
