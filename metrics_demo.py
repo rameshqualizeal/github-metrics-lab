@@ -257,3 +257,8 @@ def example_clamp_helper_1():
     [3, 0, 7.5]
     """
     return [clamp_helper_1(v) for v in (3, 0, 7.5)]
+
+
+def freshness_check_helper_1(value):
+    """AT-59: small helper added to exercise the PR flow."""
+    return value
