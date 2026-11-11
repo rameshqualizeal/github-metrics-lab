@@ -21,10 +21,20 @@ def calculate_division(a, b):
 
 
 def percent_change(old, new):
-    """Return the percentage change from ``old`` to ``new``, rounded to 2 decimals.
+    """Return the percentage change from ``old`` to ``new``.
+
+    Args:
+        old: The starting (baseline) value.
+        new: The ending value.
+
+    Returns:
+        A float giving ``(new - old) / old * 100``, rounded to 2 decimal
+        places. Positive values mean an increase and negative values a
+        decrease; e.g. ``percent_change(50, 75)`` returns ``50.0``.
 
     Raises:
-        ValueError: If ``old`` is 0, since the change is undefined.
+        ValueError: If ``old`` is 0, because the percentage change from a
+            zero baseline is undefined.
     """
     if old == 0:
         raise ValueError("old value must not be zero")
