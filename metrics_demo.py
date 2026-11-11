@@ -28,9 +28,11 @@ def percent_change(old, new):
         new: The ending value.
 
     Returns:
-        A float giving ``(new - old) / old * 100``, rounded to 2 decimal
-        places. Positive values mean an increase and negative values a
-        decrease; e.g. ``percent_change(50, 75)`` returns ``50.0``.
+        A float giving ``(new - old) / abs(old) * 100``, rounded to 2
+        decimal places. Positive values mean an increase and negative
+        values a decrease, even when ``old`` is negative; e.g.
+        ``percent_change(50, 75)`` returns ``50.0`` and
+        ``percent_change(-50, -25)`` returns ``50.0``.
 
     Raises:
         ValueError: If ``old`` is 0, because the percentage change from a
@@ -38,7 +40,7 @@ def percent_change(old, new):
     """
     if old == 0:
         raise ValueError("old value must not be zero")
-    return round((new - old) / old * 100, 2)
+    return round((new - old) / abs(old) * 100, 2)
 
 
 def ai_authored_percentage(ai_lines, total_lines, ndigits=2):
