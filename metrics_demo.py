@@ -15,7 +15,30 @@ def calculate_subtraction(a, b):
 
 
 def calculate_division(a, b):
+    if b == 0:
+        raise ValueError("divisor must not be zero")
     return a / b
+
+
+def percent_change(old, new):
+    """Return the percentage change from ``old`` to ``new``.
+
+    Args:
+        old: The starting (baseline) value.
+        new: The ending value.
+
+    Returns:
+        A float giving ``(new - old) / old * 100``, rounded to 2 decimal
+        places. Positive values mean an increase and negative values a
+        decrease; e.g. ``percent_change(50, 75)`` returns ``50.0``.
+
+    Raises:
+        ValueError: If ``old`` is 0, because the percentage change from a
+            zero baseline is undefined.
+    """
+    if old == 0:
+        raise ValueError("old value must not be zero")
+    return round((new - old) / old * 100, 2)
 
 
 def ai_authored_percentage(ai_lines, total_lines, ndigits=2):
@@ -72,6 +95,11 @@ if __name__ == "__main__":
     print(calculate_total(10, 20))
     print(ai_authored_percentage(45, 120))
     print(summary_line([3, 7, 1, 9, 5]))
+
+    print(percent_change(80, 100))
+    print(calculate_division(9, 3))
+    print(summary_line([]))
+
 
 
 def test_create_task_rejects_non_string_description(client):
