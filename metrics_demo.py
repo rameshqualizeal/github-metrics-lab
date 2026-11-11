@@ -243,3 +243,8 @@ def percentile(values, p):
     high = min(low + 1, len(ordered) - 1)
     return ordered[low] + (ordered[high] - ordered[low]) * (k - low)
 
+
+
+def clamp_helper_1(value):
+    """AT-57: small helper added to exercise the PR flow."""
+    return value
