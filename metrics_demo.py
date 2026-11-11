@@ -248,3 +248,12 @@ def percentile(values, p):
 def clamp_helper_1(value):
     """AT-57: small helper added to exercise the PR flow."""
     return value
+
+
+def example_clamp_helper_1():
+    """AT-57: sample usage of clamp_helper_1.
+
+    >>> example_clamp_helper_1()
+    [3, 0, 7.5]
+    """
+    return [clamp_helper_1(v) for v in (3, 0, 7.5)]
