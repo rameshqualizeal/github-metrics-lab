@@ -7,7 +7,7 @@
     "node": ">=22.18"
   },
   "scripts": {
-    "test": "node --test src/metrics.test.ts src/realtime-deploy.test.ts src/metric-thresholds.test.js src/snapshot-diff.test.js",
+    "test": "node --test src/metrics.test.ts src/realtime-deploy.test.ts src/metric-thresholds.test.js src/snapshot-diff.test.js src/percent-change.test.js",
     "demo:live": "node src/live-metrics-demo.ts",
     "demo:json": "node src/live-metrics-json.ts",
     "demo:realtime": "node src/realtime-metrics-demo.ts",
