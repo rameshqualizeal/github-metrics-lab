@@ -28,8 +28,10 @@ export function formatChange(change, digits = 1) {
     case 'flat': return '±0%';
     default: {
       const v = change.value;
-      if (v === 0) return '±0%';
-      return `${v > 0 ? '+' : '−'}${Math.abs(v).toFixed(digits)}%`;
+      const shown = Math.abs(v).toFixed(digits);
+      // Treat changes that round to zero as flat, so a tile never shows "−0.0%".
+      if (Number(shown) === 0) return '±0%';
+      return `${v > 0 ? '+' : '−'}${shown}%`;
     }
   }
 }

@@ -13,6 +13,11 @@ test('zero prior is "new", both zero is flat', () => {
   assert.equal(formatChange(percentChange(0, 0)), '±0%');
 });
 
+test('changes that round to zero are flat, not "−0.0%"', () => {
+  assert.equal(formatChange({ kind: 'pct', value: -0.04 }), '±0%');
+  assert.equal(formatChange({ kind: 'pct', value: 0.04 }, 2), '+0.04%');
+});
+
 test('missing values are n/a', () => {
   assert.equal(formatChange(percentChange(null, 4)), 'n/a');
   assert.equal(formatChange(percentChange(4, undefined)), 'n/a');
