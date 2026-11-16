@@ -13,3 +13,5 @@ Notable changes to the metrics lab, newest first.
 - Add a contributing guide, EditorConfig, Node version pins, and a preflight
   version check.
 - Add local setup instructions to the README.
+
+- `safeDivide(a, b)` in `src/safe-divide.js` returns `null` for a zero or non-finite divisor.
