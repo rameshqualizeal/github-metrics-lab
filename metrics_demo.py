@@ -119,6 +119,20 @@ def change_failure_rate(failed_deploys, total_deploys, ndigits=2):
 
 
 
+def time_to_restore_hours(failed_iso, restored_iso):
+    """Hours from a failed deployment to service being restored.
+
+    Returns None when either timestamp is missing (the incident is still open).
+    Raises ValueError if ``restored_iso`` is earlier than ``failed_iso``.
+    """
+    if not failed_iso or not restored_iso:
+        return None
+    hours = lead_time_hours(failed_iso, restored_iso)
+    if hours < 0:
+        raise ValueError("restored_iso must not be earlier than failed_iso")
+    return hours
+
+
 if __name__ == "__main__":
     print(calculate_total(10, 20))
     print(ai_authored_percentage(45, 120))
@@ -322,3 +336,12 @@ def test_change_failure_rate_rejects_invalid_counts():
         change_failure_rate(1, -4)
     with pytest.raises(ValueError):
         change_failure_rate(5, 4)
+
+
+def test_time_to_restore_hours():
+    import pytest
+
+    assert time_to_restore_hours("2026-11-17T10:00:00Z", "2026-11-17T12:30:00Z") == 2.5
+    assert time_to_restore_hours("2026-11-17T10:00:00Z", None) is None
+    with pytest.raises(ValueError):
+        time_to_restore_hours("2026-11-17T12:00:00Z", "2026-11-17T10:00:00Z")
