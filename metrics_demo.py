@@ -275,3 +275,27 @@ def range_clamp_helper(value, low=0, high=100):
     42
     """
     return max(low, min(high, value))
+
+
+def change_failure_rate(failed_deploys, total_deploys, ndigits=2):
+    """Percentage of deployments that caused a failure in production (0-100).
+
+    Returns None when there were no deployments.
+    """
+    if failed_deploys < 0 or total_deploys < 0:
+        raise ValueError("deploy counts must be non-negative")
+    if failed_deploys > total_deploys:
+        raise ValueError("failed_deploys cannot exceed total_deploys")
+    if total_deploys == 0:
+        return None
+    return round(failed_deploys / total_deploys * 100, ndigits)
+
+
+def test_change_failure_rate():
+    import pytest
+
+    assert change_failure_rate(1, 4) == 25.0
+    assert change_failure_rate(1, 3) == 33.33
+    assert change_failure_rate(0, 0) is None
+    with pytest.raises(ValueError):
+        change_failure_rate(5, 4)
