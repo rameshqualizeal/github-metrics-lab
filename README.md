@@ -101,3 +101,5 @@ defect escape rate (%)=25 > 10
 AIET live test 2 Nov
 
 > Note (AT-61): small helper and docs PRs in this repo are used to test the PR review flow end to end.
+
+> Note: `metrics_demo.py` and `review_demo.py` are Python demo helpers; run their tests with `python -m pytest`.
