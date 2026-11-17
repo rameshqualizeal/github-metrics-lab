@@ -93,6 +93,32 @@ def range_of(values):
     return max(values) - min(values)
 
 
+def change_failure_rate(failed_deploys, total_deploys, ndigits=2):
+    """Return the percentage of deployments that caused a production failure.
+
+    Args:
+        failed_deploys: Deployments that led to an incident, rollback or hotfix.
+        total_deploys: All deployments in the same time window.
+        ndigits: Decimal places to round the result to.
+
+    Returns:
+        A float between 0 and 100, or None when ``total_deploys`` is 0
+        (no deployments means the rate is undefined, not zero).
+
+    Raises:
+        ValueError: If either count is negative or ``failed_deploys``
+            exceeds ``total_deploys``.
+    """
+    if failed_deploys < 0 or total_deploys < 0:
+        raise ValueError("deploy counts must be non-negative")
+    if failed_deploys > total_deploys:
+        raise ValueError("failed_deploys cannot exceed total_deploys")
+    if total_deploys == 0:
+        return None
+    return round(failed_deploys / total_deploys * 100, ndigits)
+
+
+
 if __name__ == "__main__":
     print(calculate_total(10, 20))
     print(ai_authored_percentage(45, 120))
@@ -101,6 +127,7 @@ if __name__ == "__main__":
     print(percent_change(80, 100))
     print(calculate_division(9, 3))
     print(summary_line([]))
+    print(change_failure_rate(1, 4))
 
 
 
@@ -275,3 +302,23 @@ def range_clamp_helper(value, low=0, high=100):
     42
     """
     return max(low, min(high, value))
+
+
+def test_change_failure_rate():
+    assert change_failure_rate(1, 4) == 25.0
+    assert change_failure_rate(1, 3) == 33.33
+    assert change_failure_rate(1, 3, ndigits=1) == 33.3
+    assert change_failure_rate(0, 5) == 0.0
+    assert change_failure_rate(5, 5) == 100.0
+    assert change_failure_rate(0, 0) is None
+
+
+def test_change_failure_rate_rejects_invalid_counts():
+    import pytest
+
+    with pytest.raises(ValueError):
+        change_failure_rate(-1, 4)
+    with pytest.raises(ValueError):
+        change_failure_rate(1, -4)
+    with pytest.raises(ValueError):
+        change_failure_rate(5, 4)
